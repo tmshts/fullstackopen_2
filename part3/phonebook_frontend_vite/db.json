@@ -1,0 +1,29 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "454545",
+      "id": 1
+    },
+    {
+      "name": "John Smith",
+      "number": "45646465",
+      "id": 2
+    },
+    {
+      "name": "Tomas Hatas",
+      "number": "4646546",
+      "id": 3
+    },
+    {
+      "name": "Pavel Novak",
+      "number": "7897979",
+      "id": 4
+    },
+    {
+      "name": "Pavel Smith",
+      "number": "44525432",
+      "id": 5
+    }
+  ]
+}
