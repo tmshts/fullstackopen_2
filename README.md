@@ -9,4 +9,4 @@ Each part represents a specific topic of the web development.
 
 ## This repository contains:
 * part3 - [Programming a server with NodeJS and Express](https://github.com/tmshts/fullstackopen_2/tree/main/part3)
-* part4 - [Testing Express servers, user administration](https://github.com/tmshts/fullstackopen_2/tree/main/part4)
+* part4 - [Testing Express servers, user administration](https://github.com/tmshts/fullstackopen_2/tree/main/part4) - in progress
