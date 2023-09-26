@@ -1,6 +1,6 @@
 # Programming a server with NodeJS and Express
 
-## Connecting Front-end with Back-end, deploying the app to internet, saving data to MongoDB.
+A goal is to connect Front-end with Back-end and deploy the app to internet, while using database MongoDB.
 
 ### Used:
 1. Node.js
