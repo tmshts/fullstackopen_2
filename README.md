@@ -6,3 +6,7 @@ The main focus is on building single page applications with ReactJS that use RES
 Moreover, Redux, Node.js, MongoDB, GraphQL and TypeScript are introduced.
 
 Each part represents a specific topic of the web development.
+
+## This repository contains:
+### 1. part3 - Programming a server with NodeJS and Express
+### 2. part4 - 
