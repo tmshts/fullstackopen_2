@@ -8,5 +8,5 @@ Moreover, Redux, Node.js, MongoDB, GraphQL and TypeScript are introduced.
 Each part represents a specific topic of the web development.
 
 ## This repository contains:
-### 1. part3 - Programming a server with NodeJS and Express
-### 2. part4 - 
+* part3 - [Programming a server with NodeJS and Express](https://github.com/tmshts/fullstackopen_2/tree/main/part3)
+* part4 - [Testing Express servers, user administration](https://github.com/tmshts/fullstackopen_2/tree/main/part4)
