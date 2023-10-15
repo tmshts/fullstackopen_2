@@ -80,16 +80,16 @@ describe('Verify that if the likes property is missing from the request, it will
       title: 'First class tests',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll'
-      //likes: 12
+      // likes: 12
     }
 
-    //const resultedBlog = await api
+    // const resultedBlog = await api
     await api
       .post('/api/blogs')
       .send(newBlogPost)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    //console.log(resultedBlog.body.likes)
+    // console.log(resultedBlog.body.likes)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
