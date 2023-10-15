@@ -1,10 +1,20 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   author: String,
-  url: String,
-  likes: Number
+  url: {
+    type: String,
+    required: true
+  },
+  likes: {
+    type: Number,
+    required: true,
+    default: 0
+  },
 })
 
 // to format the objects returned by Mongoose is to modify the toJSON method of the schema

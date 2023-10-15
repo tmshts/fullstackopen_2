@@ -7,6 +7,8 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blogs = require('../models/blogs')
 const helper = require('./test_helper')
+// const error = require('../utils/logger')
+mongoose.set('bufferTimeoutMS', 30000)
 
 beforeEach(async () => {
   await Blogs.deleteMany({})
@@ -69,6 +71,68 @@ describe('Verify that making an HTTP POST request to the /api/blogs URL successf
       'Canonical string reduction'
     )
   })
+})
+
+describe('Verify that if the likes property is missing from the request, it will default to the value 0', () => {
+  test('Likes property missing -> default to value 0', async () => {
+
+    const newBlogPost = {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll'
+      //likes: 12
+    }
+
+    //const resultedBlog = await api
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    //console.log(resultedBlog.body.likes)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+  }, 10000)
+})
+
+describe('Verify that if the title or url properties are missing, the backend responds with status code 400 Bad Request.', () => {
+  test('Title property missing -> status code 400 bad request', async () => {
+
+    const newBlogPost = {
+      // title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+      likes: 12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlog.length)
+  }, 10000)
+
+
+  test('URL property missing -> status code 400 bad request', async () => {
+
+    const newBlogPost = {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      //url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+      likes: 12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogPost)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlog.length)
+  }, 10000)
 })
 
 
