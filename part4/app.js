@@ -8,6 +8,8 @@ const blogRouter = require('./controllers/blog')
 ////
 
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
+
 
 const express = require('express')
 const app = express()
@@ -22,6 +24,7 @@ const mongoUrl = config.MONGODB_URI
 logger.info('connecting to', mongoUrl)
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 app.use(cors())
 ////
 
