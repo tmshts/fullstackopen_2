@@ -2,7 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
+    "title": "test",
     "author": "Edsger W. Dijkstra",
     "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    "likes": 5
+    "likes": 5,
+    "userId": "653d22ad0fa60ddfff9b5ad8"
 }
