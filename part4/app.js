@@ -21,6 +21,8 @@ app.use(express.json())
 
 const mongoose = require('mongoose')
 
+app.use(middleware.tokenExtractor)
+
 //// added by me ////
 const mongoUrl = config.MONGODB_URI
 logger.info('connecting to', mongoUrl)
