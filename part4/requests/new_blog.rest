@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer .
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbWFzIiwiaWQiOiI2NTQ3NzQwNjc1YTU3Y2UyYTY4MjQxZTEiLCJpYXQiOjE2OTkxODI4MTAsImV4cCI6MTY5OTE4NjQxMH0.WNwiCyL3Rhb4Du8mLCw0OXJwRUTAvONs4sDnhPtsuns
 
 {
-    "title": "token test 2",
+    "title": "token test tomas",
     "author": "Edsger W. Dijkstra",
     "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
     "likes": 5,

@@ -19,6 +19,12 @@ const tokenExtractor = (request, response, next) => {
     //console.log(result[1])
     const bearer_token = result[1]
     request.token = bearer_token
+  } else if (request.method === 'DELETE') {
+    const header_authorization = request.headers.authorization
+    const result = header_authorization.split(' ')
+    //console.log(result[1])
+    const bearer_token = result[1]
+    request.token = bearer_token
   }
   next()
 }
