@@ -4,7 +4,7 @@ require('dotenv').config()
 const logger = require('./utils/logger')
 const config = require('./utils/config')
 
-const blogRouter = require('./controllers/blog')
+const blogsRouter = require('./controllers/blog')
 ////
 
 const usersRouter = require('./controllers/users')
@@ -22,11 +22,16 @@ app.use(express.json())
 const mongoose = require('mongoose')
 
 app.use(middleware.tokenExtractor)
+// use userExtractor middleware in the entire app
+//app.use(middleware.userExtractor)
 
 //// added by me ////
 const mongoUrl = config.MONGODB_URI
 logger.info('connecting to', mongoUrl)
-app.use('/api/blogs', blogRouter)
+
+// use userExtractor middleware only in /api/blogs routes
+//app.use('/api/blogs', middleware.userExtractor, blogsRouter)
+app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use(cors())

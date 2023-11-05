@@ -1,8 +1,8 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blogs')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
-
+//const User = require('../models/user')
+//const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 // not necessary because used middleware to set the token into request.token
 /*
@@ -15,7 +15,6 @@ const getTokenFrom = request => {
 }
 */
 
-
 blogRouter.get('/', async (request, response) => {
 
   const blogs = await Blog
@@ -25,7 +24,7 @@ blogRouter.get('/', async (request, response) => {
     .json(blogs)
 })
 
-blogRouter.delete('/:id', async (request, response, next) => {
+blogRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
   /*
   await Blog.findByIdAndRemove(request.params.id)
   response
@@ -33,6 +32,8 @@ blogRouter.delete('/:id', async (request, response, next) => {
     .end()
   */
   try {
+    // 1. option to find out who is token holder
+    /*
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken.id) {
       return response
@@ -40,9 +41,18 @@ blogRouter.delete('/:id', async (request, response, next) => {
         .json({ error: 'token invalid' })
     }
     const user = await User.findById(decodedToken.id)
+    */
+    // 2. option to find out who is token holder when using middleware
+    const user = request.user
+
     const blog = await Blog.findById(request.params.id)
 
-    if ( blog.user.toString() === user.id.toString() ) {
+    if (!blog) {
+      response
+        .status(404)
+        .json({ error: 'Blog ID does not exist' })
+    }
+    else if ( blog.user.toString() === user.id.toString() ) {
       await Blog.findByIdAndRemove(request.params.id)
       response
         .status(204)
@@ -76,7 +86,7 @@ blogRouter.put('/:id', async (request, response) => {
     .json(updatedBlog)
 })
 
-blogRouter.post('/', async (request, response, next) => {
+blogRouter.post('/', middleware.userExtractor, async (request, response, next) => {
 
   const body = request.body
 
@@ -85,6 +95,9 @@ blogRouter.post('/', async (request, response, next) => {
     // Token logic
     // The object decoded from the token contains the username and id fields, which tell the server who made the request.
     // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+
+    // 1. option to find out who is token holder
+    /*
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     //console.log(decodedToken)
     if (!decodedToken.id) {
@@ -92,7 +105,11 @@ blogRouter.post('/', async (request, response, next) => {
         .status(401)
         .json({ error: 'token invalid' })
     }
+    // find out who is token holder
     const user = await User.findById(decodedToken.id)
+    */
+    // 2. option to find out who is token holder when using middleware
+    const user = request.user
 
     // replaced by token
     // const user = await User.findById(body.userId)
