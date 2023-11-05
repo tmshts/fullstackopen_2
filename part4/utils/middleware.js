@@ -1,4 +1,4 @@
-const logger = require('./logger')
+// const logger = require('./logger')
 
 // express error handling into middleware
 const errorHandler = (error, request, response, next) => {
