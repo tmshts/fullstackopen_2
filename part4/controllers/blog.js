@@ -24,6 +24,26 @@ blogRouter.get('/', async (request, response) => {
     .json(blogs)
 })
 
+blogRouter.get('/:id', async (request, response, next) => {
+
+  try {
+    const blog = await Blog.findById(request.params.id)
+
+    if (!blog) {
+      response
+        .status(404)
+        .json({ error: 'Blog ID does not exist' })
+    } else {
+      response
+        .status(200)
+        .json(blog)
+    }
+  } catch(exception) {
+    next(exception)
+  }
+})
+
+
 blogRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
   /*
   await Blog.findByIdAndRemove(request.params.id)
