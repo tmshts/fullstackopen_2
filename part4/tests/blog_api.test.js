@@ -26,8 +26,8 @@ beforeEach(async () => {
 
   //login to test database to get user's token
   /// assumption this user was already created :)
-  const username = 'mluukkai'
-  const password = 'salainen'
+  const username = 'tmshts'
+  const password = 'tmshts'
 
   const result = await api
     .post('/api/login')
