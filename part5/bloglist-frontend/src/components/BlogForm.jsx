@@ -1,10 +1,24 @@
-const BlogForm = (props) => {
+const BlogForm = ({ 
+  title, author, url,
+  handleTitleChange, handleAuthorChange, handleUrlChange,
+  handleSubmit 
+  }) => {
+
     return (
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
-          <div>title: <input onChange={props.handleTitleChange} value={props.title} required={true} type='text' /></div>
-          <div>author: <input onChange={props.handleAuthorChange} value={props.author} required={true} type='text'/></div>
-          <div>url: <input onChange={props.handleUrlChange} value={props.url} required={true} type='text'/></div>
+          <div>title: <input onChange={handleTitleChange}
+                            value={title}
+                            required={true}
+                            type='text' /></div>
+          <div>author: <input onChange={handleAuthorChange}
+                              value={author}
+                              required={true}
+                              type='text'/></div>
+          <div>url: <input onChange={handleUrlChange}
+                            value={url}
+                            required={true}
+                            type='text'/></div>
         </div>
         <div>
           <button type="submit">create</button>

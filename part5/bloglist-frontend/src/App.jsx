@@ -5,6 +5,8 @@ import ErrorMessage from './components/ErrorMessage'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 import './index.css'
 
 
@@ -79,30 +81,6 @@ const App = () => {
     setUser(null)
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
-
   const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
@@ -127,6 +105,25 @@ const App = () => {
 
   }
 
+  const blogForm = () => {
+
+    return (
+      <div>
+        
+        <Togglable buttonLabel='new note'>
+          <BlogForm
+          title={title} author={author} url={url}
+          handleTitleChange={handleTitleChange}
+          handleAuthorChange={handleAuthorChange}
+          handleUrlChange={handleUrlChange}
+          handleSubmit={addBlog}
+          />
+        </Togglable>
+
+      </div>
+    )
+  }
+
   if (user === null) {
     return (
       <div>
@@ -135,14 +132,19 @@ const App = () => {
 
       <ErrorMessage message={errorMessage} />
 
-        {loginForm()}
+      <LoginForm
+        username={username} password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
       </div>
     )
   }
 
   return (
     <div>
-        <h2>blogs</h2>
+      <h2>blogs</h2>
 
       <Notification message={notification} />
 
@@ -150,13 +152,7 @@ const App = () => {
        <p>{user.name} logged in<button onClick={handleLogOut}>logout</button></p>
       </div>
 
-      <div>
-      <h2>create new</h2> 
-        <BlogForm onSubmit={addBlog}
-        title={title} author={author} url={url}
-        handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} handleUrlChange={handleUrlChange}
-        />
-      </div>
+      {blogForm()}
 
       <div>
       {blogs.map(blog =>
@@ -167,5 +163,6 @@ const App = () => {
     </div>
   )
 }
+
 
 export default App
