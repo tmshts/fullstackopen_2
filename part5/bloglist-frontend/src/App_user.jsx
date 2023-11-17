@@ -130,10 +130,9 @@ const App = () => {
   if (user === null) {
     return (
       <div>
+        <h2>Log in to application</h2>
 
-      <h2>Log in to application</h2>
-
-      <ErrorMessage message={errorMessage} />
+        <ErrorMessage message={errorMessage} />
 
         {loginForm()}
       </div>
@@ -142,27 +141,33 @@ const App = () => {
 
   return (
     <div>
+      {user && 
         <h2>blogs</h2>
+      }
 
       <Notification message={notification} />
 
-      <div>
-       <p>{user.name} logged in<button onClick={handleLogOut}>logout</button></p>
-      </div>
+      {user && <div>
+       <p>{user.name} logged in to application<button onClick={handleLogOut}>logout</button></p>
+       </div>
+      }
 
-      <div>
-      <h2>create new</h2> 
-        <BlogForm onSubmit={addBlog}
-        title={title} author={author} url={url}
-        handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} handleUrlChange={handleUrlChange}
-        />
-      </div>
+      {user &&
+        <div>
+        <h2>create new</h2> 
+          <BlogForm onSubmit={addBlog}
+          title={title} author={author} url={url}
+          handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} handleUrlChange={handleUrlChange}
+          />
+        </div>
+      }
 
-      <div>
+      {user && <div>
       {blogs.map(blog =>
               <Blog key={blog.id} blog={blog} />
       )}
       </div>
+      }
 
     </div>
   )
