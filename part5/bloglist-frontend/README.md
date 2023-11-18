@@ -1,8 +1,10 @@
-# React + Vite
+# Testing React apps
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A goal is to write tests for React code for the frontend and also implement token based authentication.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Used:
+1. local storage
+2. components children, aka. props.children
+3. useRef hook
+4. useImperativeHandle hook 
+5. jsonwebtoken library
