@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import ErrorMessage from './components/ErrorMessage'
@@ -17,9 +17,9 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -36,6 +36,7 @@ const App = () => {
     }
   }, [])
 
+  /*
   const handleTitleChange = (event) => {
     setTitle(event.target.value)
   }
@@ -47,6 +48,7 @@ const App = () => {
   const handleUrlChange = (event) => {
     setUrl(event.target.value)
   }
+  */
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -81,13 +83,18 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (event) => {
+  const blogFormRef = useRef()
+
+  const addBlog = async (blogObject) => {
+    /*
     event.preventDefault()
     const blogObject = {
       title: title,
       author: author,
       url: url
     }
+    */
+    blogFormRef.current.toggleVisibility()
     const addedBlog = await blogService.create(blogObject)
 
     setBlogs(blogs.concat(addedBlog))
@@ -99,9 +106,9 @@ const App = () => {
       setNotification(null)
     }, 5000) 
 
-    setAuthor('')
-    setTitle('')
-    setUrl('')
+    // setAuthor('')
+    // setTitle('')
+    // setUrl('')
 
   }
 
@@ -110,13 +117,13 @@ const App = () => {
     return (
       <div>
         
-        <Togglable buttonLabel='new note'>
+        <Togglable buttonLabel='new note' ref={blogFormRef}>
           <BlogForm
-          title={title} author={author} url={url}
-          handleTitleChange={handleTitleChange}
-          handleAuthorChange={handleAuthorChange}
-          handleUrlChange={handleUrlChange}
-          handleSubmit={addBlog}
+          // title={title} author={author} url={url}
+          // handleTitleChange={handleTitleChange}
+          // handleAuthorChange={handleAuthorChange}
+          // handleUrlChange={handleUrlChange}
+          createBlog={addBlog}
           />
         </Togglable>
 
