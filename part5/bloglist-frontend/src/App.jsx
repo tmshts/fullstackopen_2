@@ -94,7 +94,9 @@ const App = () => {
       url: url
     }
     */
-    blogFormRef.current.toggleVisibility()
+  blogFormRef.current.toggleVisibility()
+
+   try {
     const addedBlog = await blogService.create(blogObject)
 
     setBlogs(blogs.concat(addedBlog))
@@ -109,6 +111,14 @@ const App = () => {
     // setAuthor('')
     // setTitle('')
     // setUrl('')
+   }
+   catch(exception) {
+    setErrorMessage(`Blog ${BlogToAdd.title} can not be added.`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+   }
+
 
   }
 
