@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
 
 // add state to the blog post like blogFormVisible in Togglable component
 // this state controls the displayed form of the blog post like 
@@ -7,6 +8,8 @@ import { useState } from 'react'
 const Blog = ({ blog }) => {
 
   const [blogVisible, setBlogVisible] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -22,6 +25,32 @@ const Blog = ({ blog }) => {
     setBlogVisible(!blogVisible)
   }
 
+  const handleLike = async () => {
+
+    try {
+      const blogObject = {
+        user: blog.user.id,
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: likes + 1
+      }
+
+    const updatedBlog = await blogService.updateBlog(blog.id, blogObject)
+    //console.log(updatedBlog)
+
+    setLikes(likes + 1)
+
+    } catch(exception) {
+      setErrorMessage('Blog has not been updated')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+
+  }
+  
+
   return (
     <div style={blogStyle}>
 
@@ -35,7 +64,7 @@ const Blog = ({ blog }) => {
         {blog.url}
       </div>
       <div>
-        likes {blog.likes} <button>like</button>
+        likes {likes} <button onClick={handleLike}>like</button>
       </div>
       <div>
         {blog.user.name}
