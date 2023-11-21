@@ -89,21 +89,22 @@ blogRouter.delete('/:id', middleware.userExtractor, async (request, response, ne
 })
 
 blogRouter.put('/:id', async (request, response) => {
-  const { title, author, url, likes } = request.body
+  const { title, author, url, likes, user } = request.body
 
   const updatedBlog = {
     title: title,
     author: author,
     url: url,
-    likes: likes
+    likes: likes,
+    user: user.id
   }
 
-  await Blog
+  const returnedBlogsFromBackend = await Blog
     .findByIdAndUpdate(request.params.id, updatedBlog, { new: true })
-  // console.log('found')
+
   response
     .status(200)
-    .json(updatedBlog)
+    .json(returnedBlogsFromBackend)
 })
 
 blogRouter.post('/', middleware.userExtractor, async (request, response, next) => {

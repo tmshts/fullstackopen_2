@@ -22,9 +22,10 @@ const App = () => {
   // const [url, setUrl] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    ) 
+    blogService.getAll()
+               .then(blogs => {
+                setBlogs( blogs )
+               }) 
   }, [])
 
   useEffect(() => {
@@ -69,7 +70,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
+    }
+    catch (exception) {
       setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
@@ -86,31 +88,18 @@ const App = () => {
   const blogFormRef = useRef()
 
   const addBlog = async (blogObject) => {
-    /*
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
-    */
+
   blogFormRef.current.toggleVisibility()
 
    try {
     const addedBlog = await blogService.create(blogObject)
-
     setBlogs(blogs.concat(addedBlog))
-
     setNotification(
       `A new blog ${addedBlog.title} by ${addedBlog.author} added`
     )
     setTimeout(() => {
       setNotification(null)
     }, 5000) 
-
-    // setAuthor('')
-    // setTitle('')
-    // setUrl('')
    }
    catch(exception) {
     setErrorMessage(`Blog ${BlogToAdd.title} can not be added.`)
@@ -118,8 +107,42 @@ const App = () => {
       setErrorMessage(null)
     }, 5000)
    }
+  }
 
+  const deleteBlog = async (blogObject) => {
+    try {
+      if (window.confirm(`Do you want to remove blog ${blogObject.title} by ${blogObject.author}`)) {
+        await blogService.deleteBlog(blogObject.id)
+        setNotification(
+          `A blog ${blogObject.title} by ${blogObject.author} has been deleted`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+        setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+      }
+    }
+    catch(exception) {
+      setErrorMessage(`Blog ${blogObject.title} can not be added.`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+     }
 
+  }
+
+  const updateLikes = async (blogToUpdate) => {
+    try {
+      const updatedBlog = await blogService.updateBlog(blogToUpdate.id, blogToUpdate)
+      //console.log(blogs.map(blog => blog.id === blogToUpdate.id ? blogToUpdate : blog ))
+      setBlogs(blogs.map(blog => blog.id === blogToUpdate.id ? blogToUpdate : blog ))
+    }
+      catch(exception) {
+      setErrorMessage(`A like for ${blogToUpdate.title} cannot be made.`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+     }      
   }
 
   const blogForm = () => {
@@ -158,6 +181,7 @@ const App = () => {
       </div>
     )
   }
+  
 
   return (
     <div>
@@ -172,8 +196,8 @@ const App = () => {
       {blogForm()}
 
       <div>
-      {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+              <Blog key={blog.id} blog={blog} updateLikes={updateLikes} deleteBlog={deleteBlog}/>
       )}
       </div>
 

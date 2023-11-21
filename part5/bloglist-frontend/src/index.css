@@ -17,3 +17,15 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.delete_btn {
+  background: red;
+  color: white;
+  border-radius: 5px;
+}
+
+.like_btn {
+  background: green;
+  color: white;
+  border-radius: 5px;
+}

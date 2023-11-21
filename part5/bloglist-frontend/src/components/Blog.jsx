@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+
 
 // add state to the blog post like blogFormVisible in Togglable component
 // this state controls the displayed form of the blog post like 
 // url, likes and user
 
-const Blog = ({ blog }) => {
+const Blog =  ( props ) => {
 
+  const { blog, updateLikes, deleteBlog } = props
+  const [blogObject, setBlogObject] = useState(blog)
   const [blogVisible, setBlogVisible] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,37 +19,28 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  const showWhenVisible = { display: blogVisible ? '' : 'none' }
+  const showBlogWhenVisible = { display: blogVisible ? '' : 'none' }
+  const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+  const user = JSON.parse(loggedUserJSON)
 
   const handleViewBlog = () => {
     setBlogVisible(!blogVisible)
   }
 
-  const handleLike = async () => {
-
-    try {
-      const blogObject = {
-        user: blog.user.id,
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: likes + 1
-      }
-
-    const updatedBlog = await blogService.updateBlog(blog.id, blogObject)
-    //console.log(updatedBlog)
-
-    setLikes(likes + 1)
-
-    } catch(exception) {
-      setErrorMessage('Blog has not been updated')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+  const handleLike = () => {
+    // blog with user
+    const blogToUpdate = {
+      ...blogObject,
+      likes: blogObject.likes + 1
     }
-
+    
+    updateLikes(blogToUpdate)
+    setBlogObject(blogToUpdate)
   }
-  
+
+  const handleDelete = async () => {
+    deleteBlog(blog)
+  }
 
   return (
     <div style={blogStyle}>
@@ -59,21 +50,25 @@ const Blog = ({ blog }) => {
       <button onClick={handleViewBlog}>{blogVisible ? 'hide' : 'view'}</button>
     </div>
 
-    <div style={showWhenVisible}>
+    <div style={showBlogWhenVisible}>
       <div>
         {blog.url}
       </div>
       <div>
-        likes {likes} <button onClick={handleLike}>like</button>
+        likes {blogObject.likes} <button className='like_btn' onClick={handleLike}>like</button>
       </div>
       <div>
-        {blog.user.name}
+        {blogObject.user.name}
       </div>
+      {(user.username === blog.user.username) && 
+        <button className='delete_btn' onClick={handleDelete}>delete</button>
+      }
     </div>
 
     </div>
 
-)}
+  )
+}
 
 
 export default Blog
