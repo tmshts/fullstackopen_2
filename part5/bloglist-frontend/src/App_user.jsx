@@ -12,7 +12,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [notification, setNotification] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState('')
@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    ) 
+    )
   }, [])
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -92,7 +92,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -100,7 +100,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const addBlog = async (event) => {
@@ -119,7 +119,7 @@ const App = () => {
     )
     setTimeout(() => {
       setNotification(null)
-    }, 5000) 
+    }, 5000)
 
     setAuthor('')
     setTitle('')
@@ -141,31 +141,31 @@ const App = () => {
 
   return (
     <div>
-      {user && 
+      {user &&
         <h2>blogs</h2>
       }
 
       <Notification message={notification} />
 
       {user && <div>
-       <p>{user.name} logged in to application<button onClick={handleLogOut}>logout</button></p>
-       </div>
+        <p>{user.name} logged in to application<button onClick={handleLogOut}>logout</button></p>
+      </div>
       }
 
       {user &&
         <div>
-        <h2>create new</h2> 
+          <h2>create new</h2>
           <BlogForm onSubmit={addBlog}
-          title={title} author={author} url={url}
-          handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} handleUrlChange={handleUrlChange}
+            title={title} author={author} url={url}
+            handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} handleUrlChange={handleUrlChange}
           />
         </div>
       }
 
       {user && <div>
-      {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
-      )}
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
       </div>
       }
 

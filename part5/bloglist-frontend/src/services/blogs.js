@@ -9,9 +9,9 @@ const setToken = newToken => {
 
 const getAll = () => {
   const returnedData = axios
-                    .get(baseUrl)
-                    .then(response => response.data)
-  
+    .get(baseUrl)
+    .then(response => response.data)
+
   return returnedData
 }
 

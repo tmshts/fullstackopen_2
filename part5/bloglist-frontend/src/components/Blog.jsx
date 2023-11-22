@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 
 // add state to the blog post like blogFormVisible in Togglable component
-// this state controls the displayed form of the blog post like 
+// this state controls the displayed form of the blog post like
 // url, likes and user
 
 const Blog =  ( props ) => {
@@ -33,7 +33,7 @@ const Blog =  ( props ) => {
       ...blogObject,
       likes: blogObject.likes + 1
     }
-    
+
     updateLikes(blogToUpdate)
     setBlogObject(blogToUpdate)
   }
@@ -45,25 +45,25 @@ const Blog =  ( props ) => {
   return (
     <div style={blogStyle}>
 
-    <div>
-      {blog.title} {blog.author}
-      <button onClick={handleViewBlog}>{blogVisible ? 'hide' : 'view'}</button>
-    </div>
+      <div>
+        {blog.title} {blog.author}
+        <button onClick={handleViewBlog}>{blogVisible ? 'hide' : 'view'}</button>
+      </div>
 
-    <div style={showBlogWhenVisible}>
-      <div>
-        {blog.url}
-      </div>
-      <div>
+      <div style={showBlogWhenVisible}>
+        <div>
+          {blog.url}
+        </div>
+        <div>
         likes {blogObject.likes} <button className='like_btn' onClick={handleLike}>like</button>
-      </div>
-      <div>
-        {blogObject.user.name}
-      </div>
-      {(user.username === blog.user.username) && 
+        </div>
+        <div>
+          {blogObject.user.name}
+        </div>
+        {(user.username === blog.user.username) &&
         <button className='delete_btn' onClick={handleDelete}>delete</button>
-      }
-    </div>
+        }
+      </div>
 
     </div>
 

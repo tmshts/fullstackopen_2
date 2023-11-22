@@ -1,13 +1,13 @@
 const ErrorMessage = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-  
-    return (
-      <div className="error_message">
-        {message}
-      </div>
-    )
+  if (message === null) {
+    return null
   }
 
-  export default ErrorMessage
+  return (
+    <div className="error_message">
+      {message}
+    </div>
+  )
+}
+
+export default ErrorMessage
