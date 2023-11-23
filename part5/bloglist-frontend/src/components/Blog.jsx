@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 const Blog =  ( props ) => {
 
-  const { blog, updateLikes, deleteBlog } = props
+  const { blog, updateLikes, deleteBlog, loggedUser } = props
   const [blogObject, setBlogObject] = useState(blog)
   const [blogVisible, setBlogVisible] = useState(false)
 
@@ -20,8 +20,6 @@ const Blog =  ( props ) => {
   }
 
   const showBlogWhenVisible = { display: blogVisible ? '' : 'none' }
-  const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-  const user = JSON.parse(loggedUserJSON)
 
   const handleViewBlog = () => {
     setBlogVisible(!blogVisible)
@@ -43,24 +41,24 @@ const Blog =  ( props ) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} >
 
       <div>
-        {blog.title} {blog.author}
-        <button onClick={handleViewBlog}>{blogVisible ? 'hide' : 'view'}</button>
+        <span className='title_and_url_div'>{blog.title} {blog.author}</span>
+        <button onClick={handleViewBlog} className='view_btn'>{blogVisible ? 'hide' : 'view'}</button>
       </div>
 
-      <div style={showBlogWhenVisible}>
-        <div>
+      <div style={showBlogWhenVisible} className='url_and_likes_div'>
+        <div className='url_div'>
           {blog.url}
         </div>
         <div>
-        likes {blogObject.likes} <button className='like_btn' onClick={handleLike}>like</button>
+        likes <span className='likes_div'>{blogObject.likes}</span>  <button className='like_btn' onClick={handleLike}>like</button>
         </div>
         <div>
           {blogObject.user.name}
         </div>
-        {(user.username === blog.user.username) &&
+        {(loggedUser.username === blog.user.username) &&
         <button className='delete_btn' onClick={handleDelete}>delete</button>
         }
       </div>

@@ -16,7 +16,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const [loggedUser, setLoggedUser] = useState(null)
   // const [title, setTitle] = useState('')
   // const [author, setAuthor] = useState('')
   // const [url, setUrl] = useState('')
@@ -32,7 +32,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      setLoggedUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -67,7 +67,7 @@ const App = () => {
       // token of the user is saved in blogService
       blogService.setToken(user.token)
       // user details and token are saved to the application's state
-      setUser(user)
+      setLoggedUser(user)
       setUsername('')
       setPassword('')
     }
@@ -82,7 +82,7 @@ const App = () => {
   const handleLogOut = () => {
     //console.log('logging out')
     window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
+    setLoggedUser(null)
   }
 
   const blogFormRef = useRef()
@@ -164,7 +164,7 @@ const App = () => {
     )
   }
 
-  if (user === null) {
+  if (loggedUser === null) {
     return (
       <div>
 
@@ -190,14 +190,14 @@ const App = () => {
       <Notification message={notification} />
 
       <div>
-        <p>{user.name} logged in<button onClick={handleLogOut}>logout</button></p>
+        <p>{loggedUser.name} logged in<button onClick={handleLogOut}>logout</button></p>
       </div>
 
       {blogForm()}
 
       <div>
         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} updateLikes={updateLikes} deleteBlog={deleteBlog}/>
+          <Blog key={blog.id} blog={blog} updateLikes={updateLikes} deleteBlog={deleteBlog} loggedUser={loggedUser}/>
         )}
       </div>
 
