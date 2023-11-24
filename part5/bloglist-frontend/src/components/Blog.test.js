@@ -61,7 +61,7 @@ describe('component displaying a blog renders the blog\'s title and author, but 
   })
 
 
-  test('Blog not displaying a blog\'s url and number of likes by default - with toHaveStyle()', () => {
+  test('Blog not displaying a blog\'s url and number of likes by default - with toHaveStyle(display)', () => {
 
     container = render(<Blog blog={blog} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} loggedUser={user}/>).container
 
@@ -78,7 +78,7 @@ describe('component displaying a blog renders the blog\'s title and author, but 
   })
 
 
-  test('After clicking the button, blog displaying a blog\'s url and number of likes - version 1', async () => {
+  test('After clicking the button, blog displaying a blog\'s url and number of likes - version 1 - with toHaveStyle(display)', async () => {
 
     container = render(<Blog blog={blog} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} loggedUser={user}/>).container
 
@@ -90,7 +90,7 @@ describe('component displaying a blog renders the blog\'s title and author, but 
     expect(url_and_likes_div).not.toHaveStyle('display: none')
   })
 
-  test('After clicking the button, blog displaying a blog\'s url and number of likes - version 2', async () => {
+  test('After clicking the button, blog displaying a blog\'s url and number of likes - version 2 - with toBeVisible()', async () => {
 
     container = render(<Blog blog={blog} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} loggedUser={user}/>).container
 
@@ -99,7 +99,45 @@ describe('component displaying a blog renders the blog\'s title and author, but 
     await user_event.click(button)
 
     const url_and_likes_div = container.querySelector('.url_and_likes_div')
-    expect(url_and_likes_div).toHaveStyle('display: block')
+    expect(url_and_likes_div).toBeVisible()
+  })
+
+  test('After clicking the view button, values for url and likes match -> with toHaveTextContent() will be the element found even if the display is none or block', async () => {
+
+    container = render(<Blog blog={blog} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} loggedUser={user}/>).container
+
+    const user_event = userEvent.setup()
+    const button = screen.getByText('view')
+    await user_event.click(button)
+
+    const url_div = container.querySelector('.url_div')
+    expect(url_div).toHaveTextContent('new url')
+
+    const likes_div = container.querySelector('.likes_div')
+    expect(likes_div).toHaveTextContent('1')
+  })
+
+  test('If the like button is clicked twice, the event handler the component received as props is called twice.', async () => {
+
+    container = render(<Blog blog={blog} updateLikes={mockUpdateLikes} deleteBlog={mockDeleteBlog} loggedUser={user}/>).container
+
+    const user_event = userEvent.setup()
+    const button_view = screen.getByText('view')
+    await user_event.click(button_view)
+
+    const button_like = screen.getByText('like')
+    const likes_div = container.querySelector('.likes_div')
+
+    // like button clicked once
+    await user_event.click(button_like)
+    expect(likes_div).toHaveTextContent('2')
+
+    // like button clicked for the second time
+    await user_event.click(button_like)
+    expect(likes_div).toHaveTextContent('3')
+
+    // event handler mockUpdateLikes the component received as props is called twice
+    expect(mockUpdateLikes.mock.calls).toHaveLength(2)
   })
 
 })
