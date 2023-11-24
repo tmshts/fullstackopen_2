@@ -8,3 +8,4 @@ A goal is to write tests for React code for the frontend and also implement toke
 3. useRef hook
 4. useImperativeHandle hook 
 5. jsonwebtoken library
+6. unit testing
