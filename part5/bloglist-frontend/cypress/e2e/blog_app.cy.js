@@ -2,12 +2,18 @@ describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     // cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user = {
+    const user_1 = {
       username: 'tomas',
       name: 'tomas',
       password: 'tomas'
     }
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
+    const user_2 = {
+      username: 'tmshts',
+      name: 'tmshts',
+      password: 'tmshts'
+    }
+    cy.request('POST', 'http://localhost:3003/api/users/', user_1)
+    cy.request('POST', 'http://localhost:3003/api/users/', user_2)
     // baseUrl for the application is defined in the Cypress pre-generated configuration file cypress.config.js
     cy.visit('')
   })
@@ -60,10 +66,40 @@ describe('Blog app', function() {
         .should('contain', 'new url')
         .should('contain', 'likes')
         .should('contain', 0)
-        .get('.like_btn').click()
-      cy.contains(1)
       cy.get('.delete_btn').should('have.css', 'color', 'rgb(255, 255, 255)')
     })
-  })
 
+    it('Users can like a particular blog', function() {
+      cy.createBlog({ title: 'title 1', author: 'author 1', url: 'url 1' })
+      cy.createBlog({ title: 'title 2', author: 'author 2', url: 'url 2' })
+      cy.createBlog({ title: 'title 3', author: 'author 3', url: 'url 3' })
+      cy.contains('title 2 author 2').parent().as('particular_div')
+      cy.get('@particular_div').find('.view_btn').click()
+      cy.get('@particular_div').find('.likes_number').should('contain', 0)
+      cy.get('@particular_div').find('.like_btn').click()
+      cy.get('@particular_div').find('.likes_number').should('contain', 1)
+    })
+
+    it('User who created a blog can delete it.', function() {
+      cy.createBlog({ title: 'title 2', author: 'author 2', url: 'url 2' })
+      cy.contains('title 2 author 2').parent().as('particular_div')
+      cy.get('@particular_div').find('.view_btn').click()
+      cy.get('@particular_div').find('.delete_btn').click()
+    })
+
+    it('Only the creator can see the delete button of a blog, not anyone else.', function() {
+      cy.createBlog({ title: 'title 1', author: 'author 1', url: 'url 1' })
+      cy.createBlog({ title: 'title 2', author: 'author 2', url: 'url 2' })
+      cy.createBlog({ title: 'title 3', author: 'author 3', url: 'url 3' })
+      cy.contains('title 2 author 2').parent().as('particular_div')
+      cy.get('@particular_div').find('.view_btn').click()
+      cy.get('@particular_div').should('contain', 'delete')
+      //cy.get('@particular_div').find('.delete_btn')
+      cy.get('.log_out').click()
+
+      cy.login({ username: 'tmshts', password: 'tmshts' })
+      cy.get('@particular_div').find('.view_btn').click()
+      cy.get('@particular_div').should('not.contain', 'delete')
+    })
+  })
 })

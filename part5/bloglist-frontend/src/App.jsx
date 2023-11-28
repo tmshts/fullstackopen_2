@@ -190,7 +190,7 @@ const App = () => {
       <Notification message={notification} />
 
       <div>
-        <p>{loggedUser.name} logged in<button onClick={handleLogOut}>logout</button></p>
+        <p>{loggedUser.name} logged in<button className='log_out' onClick={handleLogOut}>logout</button></p>
       </div>
 
       {blogForm()}
