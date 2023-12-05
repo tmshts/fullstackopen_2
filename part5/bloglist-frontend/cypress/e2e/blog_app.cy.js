@@ -101,5 +101,36 @@ describe('Blog app', function() {
       cy.get('@particular_div').find('.view_btn').click()
       cy.get('@particular_div').should('not.contain', 'delete')
     })
+
+    it('Blogs are ordered according to likes with the blog with the most likes being first.', function() {
+      cy.createBlog({ title: 'title 1', author: 'author 1', url: 'url 1' })
+      cy.createBlog({ title: 'title 2', author: 'author 2', url: 'url 2' })
+      cy.createBlog({ title: 'title 3', author: 'author 3', url: 'url 3' })
+      cy.contains('title 1 author 1').parent().as('div_1')
+      cy.contains('title 2 author 2').parent().as('div_2')
+      cy.contains('title 3 author 3').parent().as('div_3')
+
+      cy.get('@div_1').find('.view_btn').click()
+      cy.get('@div_2').find('.view_btn').click()
+      cy.get('@div_3').find('.view_btn').click()
+
+      cy.get('@div_2').find('.likes_number').should('contain', 0)
+      cy.get('@div_2').find('.like_btn').click()
+      cy.wait(200)
+      cy.get('@div_2').find('.likes_number').should('contain', 1)
+      cy.get('@div_2').find('.like_btn').click()
+      cy.wait(200)
+      cy.get('@div_2').find('.likes_number').should('contain', 2)
+
+
+      cy.get('@div_3').find('.likes_number').should('contain', 0)
+      cy.get('@div_3').find('.like_btn').click()
+      cy.wait(200)
+      cy.get('@div_3').find('.likes_number').should('contain', 1)
+
+      cy.get('.blog').eq(0).should('contain', 'title 2 author 2')
+      cy.get('.blog').eq(1).should('contain', 'title 3 author 3')
+      cy.get('.blog').eq(2).should('contain', 'title 1 author 1')
+    })
   })
 })

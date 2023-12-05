@@ -41,29 +41,25 @@ const Blog =  ( props ) => {
   }
 
   return (
-    <div style={blogStyle} >
+    <div style={blogStyle} className='blog'>
 
-      <div>
-        <span className='title_and_url_div'>{blog.title} {blog.author}</span>
-        <button onClick={handleViewBlog} className='view_btn'>{blogVisible ? 'hide' : 'view'}</button>
+      <span className='title_and_url_div'>{blog.title} {blog.author}</span>
+      <button onClick={handleViewBlog} className='view_btn'>{blogVisible ? 'hide' : 'view'}</button>
 
-        <div style={showBlogWhenVisible} className='url_and_likes_div'>
-          <div className='url_div'>
-            {blog.url}
-          </div>
-          <div className='likes_div'>
-          likes <span className='likes_number'>{blogObject.likes}</span>  <button className='like_btn' onClick={handleLike}>like</button>
-          </div>
-          <div>
-            {blogObject.user.name}
-          </div>
-          {(loggedUser.username === blog.user.username) &&
-          <button className='delete_btn' onClick={handleDelete}>delete</button>
-          }
+      <div style={showBlogWhenVisible} className='url_and_likes_div'>
+        <div className='url_div'>
+          {blog.url}
         </div>
-
+        <div className='likes_div'>
+          likes <span className='likes_number'>{blogObject.likes}</span>  <button className='like_btn' onClick={handleLike}>like</button>
+        </div>
+        <div>
+          {blogObject.user.name}
+        </div>
+        {(loggedUser.username === blog.user.username) &&
+          <button className='delete_btn' onClick={handleDelete}>delete</button>
+        }
       </div>
-
 
     </div>
 
