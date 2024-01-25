@@ -5,3 +5,5 @@ A goal is to become familiar with the lightweight version of Redux directly supp
 ### Used:
 1. Redux
 2. React Query
+3. useReducer
+4. createContext
