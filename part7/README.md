@@ -4,3 +4,4 @@ A goal of this chapter is to become familiar with React router, a few more ways 
 
 ### Used:
 1. React Router
+2. Custom Hooks
