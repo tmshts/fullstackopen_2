@@ -12,3 +12,4 @@ Each part represents a specific topic of the web development.
 * part4 - [Testing Express servers, user administration](https://github.com/tmshts/fullstackopen_2/tree/main/part4)
 * part5 - [Testing React apps](https://github.com/tmshts/fullstackopen_2/tree/main/part5)
 * part6 - [Advanced State Management](https://github.com/tmshts/fullstackopen_2/tree/main/part6)
+* part7 - [React router, custom hooks, styling app with CSS and webpack](https://github.com/tmshts/fullstackopen_2/tree/main/part7)
