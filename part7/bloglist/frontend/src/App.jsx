@@ -9,29 +9,27 @@ import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import './index.css'
 
-import { useDispatch } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs, createBlog } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
+import { setErrorMessage } from './reducers/errorMessageReducer'
+
+import deepFreeze from 'deep-freeze'
 
 
 const App = () => {
     const dispatch = useDispatch()
 
-    const [blogs, setBlogs] = useState([])
+    //const [blogs, setBlogs] = useState([])
     //const [notification, setNotification] = useState(null)
-    const [errorMessage, setErrorMessage] = useState(null)
+    //const [errorMessage, setErrorMessage] = useState(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [loggedUser, setLoggedUser] = useState(null)
-    // const [title, setTitle] = useState('')
-    // const [author, setAuthor] = useState('')
-    // const [url, setUrl] = useState('')
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => {
-            setBlogs(blogs)
-        })
-    }, [])
+        dispatch(initializeBlogs()) 
+      }, []) 
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -42,16 +40,21 @@ const App = () => {
         }
     }, [])
 
+    const blogs = useSelector(({ blogs, notification, errorMessage }) => {
+        return blogs
+    })
+
+    deepFreeze(blogs)
+    const blogsCopied = [...blogs]
+    blogsCopied.sort((a, b) => b.likes - a.likes)
+
     const handleLogin = async (event) => {
         event.preventDefault()
-
         try {
             const user = await loginService.login({
                 username,
                 password,
             })
-            //console.log('logging in with', username, password)
-            //console.log(user)
             // user details and token are saved on the local storage
             window.localStorage.setItem(
                 'loggedBlogAppUser',
@@ -63,19 +66,16 @@ const App = () => {
             setLoggedUser(user)
             setUsername('')
             setPassword('')
-        } catch (exception) {
-            setErrorMessage('Wrong username or password')
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
+        } catch (e) {
+            dispatch(setErrorMessage('Wrong username or password', 5))
         }
     }
 
     const handleLogOut = () => {
-        //console.log('logging out')
         window.localStorage.removeItem('loggedBlogAppUser')
         setLoggedUser(null)
     }
+
 
     const blogFormRef = useRef()
 
@@ -83,22 +83,10 @@ const App = () => {
         blogFormRef.current.toggleVisibility()
 
         try {
-            const addedBlog = await blogService.create(blogObject)
-            setBlogs(blogs.concat(addedBlog))
-            dispatch(setNotification(`A new blog ${addedBlog.title} by ${addedBlog.author} added`, 5))
-            /*
-            setNotification(
-                `A new blog ${addedBlog.title} by ${addedBlog.author} added`
-            )
-            setTimeout(() => {
-                setNotification(null)
-            }, 5000)
-            */
-        } catch (exception) {
-            setErrorMessage(`Blog ${blogObject.title} can not be added.`)
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
+            dispatch(createBlog(blogObject))
+            dispatch(setNotification(`A new blog ${blogObject.title} by ${blogObject.author} added`, 5))
+        } catch (e) {
+            dispatch(setErrorMessage(`Blog ${blogObject.title}can not be added`, 5))
         }
     }
 
@@ -122,9 +110,10 @@ const App = () => {
                 setBlogs(blogs.filter((blog) => blog.id !== blogObject.id))
             }
         } catch (exception) {
-            setErrorMessage(`Blog ${blogObject.title} can not be added.`)
+            //dispatch(setErrorMessage(`Blog ${blogObject.title} can not be added.`, 5))
+            setErrorMessage(`Blog ${blogObject.title} can not be added.`, 5)
             setTimeout(() => {
-                setErrorMessage(null)
+              setErrorMessage(null)
             }, 5000)
         }
     }
@@ -142,10 +131,12 @@ const App = () => {
                 )
             )
         } catch (exception) {
-            setErrorMessage(`A like for ${blogToUpdate.title} cannot be made.`)
+            dispatch(setErrorMessage(`A like for ${blogToUpdate.title} cannot be made.`, 5))
+            /*
             setTimeout(() => {
-                setErrorMessage(null)
+                dispatch(setErrorMessage(null))
             }, 5000)
+            */
         }
     }
 
@@ -170,7 +161,7 @@ const App = () => {
             <div>
                 <h2>Log in to application</h2>
 
-                <ErrorMessage message={errorMessage} />
+                <ErrorMessage />
 
                 <LoginForm
                     username={username}
@@ -187,11 +178,14 @@ const App = () => {
         )
     }
 
+
+
     return (
         <div>
             <h2>blogs</h2>
 
             <Notification />
+            <ErrorMessage />
 
             <div>
                 <p>
@@ -205,9 +199,7 @@ const App = () => {
             {blogForm()}
 
             <div>
-                {blogs
-                    .sort((a, b) => b.likes - a.likes)
-                    .map((blog) => (
+                {blogsCopied.map((blog) => (
                         <Blog
                             key={blog.id}
                             blog={blog}
