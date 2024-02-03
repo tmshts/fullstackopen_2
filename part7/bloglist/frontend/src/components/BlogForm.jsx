@@ -18,7 +18,7 @@ const BlogForm = ({ createBlog }) => {
     }
 
     const addBlog = async (event) => {
-        event.preventDefault
+        event.preventDefault()
         // property createBlog is a function which
         // form calls when a new blog is created
         createBlog({

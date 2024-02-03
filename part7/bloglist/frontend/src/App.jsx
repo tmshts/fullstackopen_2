@@ -9,9 +9,16 @@ import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import './index.css'
 
+import { useDispatch } from 'react-redux'
+
+import { setNotification } from './reducers/notificationReducer'
+
+
 const App = () => {
+    const dispatch = useDispatch()
+
     const [blogs, setBlogs] = useState([])
-    const [notification, setNotification] = useState(null)
+    //const [notification, setNotification] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -34,20 +41,6 @@ const App = () => {
             blogService.setToken(user.token)
         }
     }, [])
-
-    /*
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value)
-  }
-  */
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -92,12 +85,15 @@ const App = () => {
         try {
             const addedBlog = await blogService.create(blogObject)
             setBlogs(blogs.concat(addedBlog))
+            dispatch(setNotification(`A new blog ${addedBlog.title} by ${addedBlog.author} added`, 5))
+            /*
             setNotification(
                 `A new blog ${addedBlog.title} by ${addedBlog.author} added`
             )
             setTimeout(() => {
                 setNotification(null)
             }, 5000)
+            */
         } catch (exception) {
             setErrorMessage(`Blog ${blogObject.title} can not be added.`)
             setTimeout(() => {
@@ -114,12 +110,15 @@ const App = () => {
                 )
             ) {
                 await blogService.deleteBlog(blogObject.id)
+                dispatch(setNotification(`A blog ${blogObject.title} by ${blogObject.author} has been deleted`, 5))
+                /*
                 setNotification(
                     `A blog ${blogObject.title} by ${blogObject.author} has been deleted`
                 )
                 setTimeout(() => {
                     setNotification(null)
                 }, 5000)
+                */
                 setBlogs(blogs.filter((blog) => blog.id !== blogObject.id))
             }
         } catch (exception) {
@@ -192,7 +191,7 @@ const App = () => {
         <div>
             <h2>blogs</h2>
 
-            <Notification message={notification} />
+            <Notification />
 
             <div>
                 <p>
