@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 const ErrorMessage = () => {
-    const errorMessage = useSelector(({ blogs, notification, errorMessage }) => {
+    const errorMessage = useSelector(({ blogs, signUser, notification, errorMessage }) => {
         return errorMessage
       })
 

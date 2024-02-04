@@ -86,7 +86,7 @@ blogRouter.put('/:id', async (request, response) => {
         author: author,
         url: url,
         likes: likes,
-        user: user.id,
+        user: user
     }
 
     const returnedBlogsFromBackend = await Blog.findByIdAndUpdate(

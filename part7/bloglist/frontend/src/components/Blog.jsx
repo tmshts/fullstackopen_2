@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-// add state to the blog post like blogFormVisible in Togglable component
-// this state controls the displayed form of the blog post like
-// url, likes and user
+import { increaseVotes, deleteBlogDispatch } from '../reducers/blogsReducer'
 
 const Blog = (props) => {
-    const { blog, updateLikes, deleteBlog, loggedUser } = props
+    const dispatch = useDispatch()
+
+    const signUser = useSelector(({ blogs, signUser, notification, errorMessage }) => {
+        return signUser
+    })
+
+    const { blog } = props
     const [blogObject, setBlogObject] = useState(blog)
     const [blogVisible, setBlogVisible] = useState(false)
 
@@ -23,21 +28,38 @@ const Blog = (props) => {
         setBlogVisible(!blogVisible)
     }
 
-    const handleLike = () => {
-        // blog with user
+    const handleLike = ( blog ) => {
         const blogToUpdate = {
-            ...blogObject,
-            likes: blogObject.likes + 1,
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: blog.likes + 1,
+            user: blog.user.id,
+            id: blog.id
         }
 
-        updateLikes(blogToUpdate)
-        setBlogObject(blogToUpdate)
-    }
+        const blogToUpdateLocally = {
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: blog.likes + 1,
+            user: blog.user,
+            id: blog.id
+        }
+        dispatch(increaseVotes(blogToUpdate))
+        setBlogObject(blogToUpdateLocally)
+    } 
 
-    const handleDelete = async () => {
-        deleteBlog(blog)
+    const handleDelete = async (blogObject) => {
+        if (
+            window.confirm(
+                `Do you want to remove blog ${blogObject.title} by ${blogObject.author}`
+            )
+        ) {
+            dispatch(deleteBlogDispatch(blogObject))
+        }
     }
-
+    
     return (
         <div style={blogStyle} className="blog">
             <span className="title_and_url_div">
@@ -52,13 +74,15 @@ const Blog = (props) => {
                 <div className="likes_div">
                     likes{' '}
                     <span className="likes_number">{blogObject.likes}</span>{' '}
-                    <button className="like_btn" onClick={handleLike}>
+                    <button className="like_btn" onClick={() => handleLike(blogObject)}>
                         like
                     </button>
                 </div>
-                <div>{blogObject.user.name}</div>
-                {loggedUser.username === blog.user.username && (
-                    <button className="delete_btn" onClick={handleDelete}>
+                <div>
+                    {blogObject.user.name}
+                </div>
+                {signUser.username === blogObject.user.username && (
+                    <button className="delete_btn" onClick={() => handleDelete(blog)}>
                         delete
                     </button>
                 )}
