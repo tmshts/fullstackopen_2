@@ -1,6 +1,16 @@
 import { useImperativeHandle, useState, forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
+import styled from 'styled-components'
+
+const HandleButton = styled.button`
+    color: #BF4F74;
+    font-size: 1em;
+    margin: 0.5em 0 0.5em 0;
+    border: 2px solid #BF4F74;
+    border-radius: 10px;
+`
+
 const Togglable = forwardRef((props, refs) => {
     const [blogFormVisible, setBlogFormVisible] = useState(false)
 
@@ -20,13 +30,13 @@ const Togglable = forwardRef((props, refs) => {
     return (
         <div>
             <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+                <HandleButton onClick={toggleVisibility}>{props.buttonLabel}</HandleButton>
             </div>
 
             <div style={showWhenVisible}>
-                <h3>create new</h3>
+                <h4>Create new blog</h4>
                 {props.children}
-                <button onClick={toggleVisibility}>cancel</button>
+                <HandleButton onClick={toggleVisibility}>cancel</HandleButton>
             </div>
         </div>
     )

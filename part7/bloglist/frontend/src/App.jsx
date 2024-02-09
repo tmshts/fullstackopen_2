@@ -17,6 +17,41 @@ import {
     Routes, Route, Link
   } from 'react-router-dom'
   
+import styled from 'styled-components'
+
+const LogoutButton = styled.button`
+    color: #BF4F74;
+    margin: 0.5em;
+    padding: 0.25em 1em;
+    border: 2px solid white;
+    border-radius: 10px;
+    &:focus {
+        outline: none
+`
+
+const Page = styled.div`
+  padding: 1em;
+`
+
+const Navigation = styled.div`
+  background: #83677B;
+  padding: 1em;
+  color: white;
+`
+
+const Footer = styled.div`
+background: #ADADAD;
+padding: 1em;
+margin-top: 1em;
+`
+
+const padding = {
+    padding: 5,
+    color: "white",
+    fontSize: 20,
+    textDecoration: "none"
+}
+
 
 const App = () => {
     const dispatch = useDispatch()
@@ -67,7 +102,7 @@ const App = () => {
     if (signUser === null) {
         return (
             <div>
-                <h2>Log in to application</h2>
+                <h2>Log in to Blog application</h2>
 
                 <ErrorMessage />
 
@@ -88,14 +123,22 @@ const App = () => {
 
     return (
         <Router>
-            <div>
-                <Link to="/">blogs</Link>
-                <Link to="/users">users</Link>
+            <Page>
+                <Navigation>
+                    <div className='parent'>
+                        <div className='child1'>
+                            <Link style={padding} to="/">Blogs</Link>
+                            <Link style={padding} to="/users">Users</Link>
+                        </div>
+                        <div className='child2'>
+                            <em> {signUser.name} logged in</em>
+                            <LogoutButton className="log_out" onClick={handleLogOut}>
+                                logout
+                            </LogoutButton>
+                        </div>
+                    </div>
 
-                {signUser.name} logged in
-                    <button className="log_out" onClick={handleLogOut}>
-                        logout
-                    </button>
+                </Navigation>
 
                 <Routes>
                     <Route path="/" element={<Blogs blogs={blogs} />} />
@@ -104,10 +147,10 @@ const App = () => {
                     <Route path="/users/:id" element={<User />} />
                 </Routes>
                 
-                <div>
-
-                </div>
-            </div>
+                <Footer>
+                    <em>© 2024 <a href="https://github.com/tmshts" target="_blank" rel="noopener noreferrer">tmshts</a>. All rights reserved.</em>
+                </Footer>
+            </Page>
         </Router>
     )
 }

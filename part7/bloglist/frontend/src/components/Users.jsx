@@ -6,10 +6,8 @@ const Users = ({ users }) => (
       <table>
         <tbody>
                 <tr>
-                    <td> </td>
-                    <td>
-                        <div><b>blogs created</b></div>
-                    </td>
+                    <th>Name</th>
+                    <th># blogs</th>
                 </tr>
             </tbody>
             <tbody>

@@ -2,6 +2,27 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogsReducer'
 
+import styled from 'styled-components'
+
+const HandleButton = styled.button`
+    color: #BF4F74;
+    font-size: 1em;
+    margin: 0.5em 0 0 0;
+    border: 2px solid #BF4F74;
+    border-radius: 10px;
+`
+
+const Input = styled.input`
+    padding: grey;
+    border: 2px solid black;
+    border-radius: 3px;
+    font-size: 15px;
+    margin: 0.5em 0 0 0;
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px #BF4F74;
+}`
+
 const BlogForm = ({ createBlogForm }) => {
     const dispatch = useDispatch()
 
@@ -41,7 +62,7 @@ const BlogForm = ({ createBlogForm }) => {
             <div>
                 <div>
                     title:{' '}
-                    <input
+                    <Input
                         onChange={handleTitleChange}
                         value={title}
                         required={true}
@@ -51,7 +72,7 @@ const BlogForm = ({ createBlogForm }) => {
                 </div>
                 <div>
                     author:{' '}
-                    <input
+                    <Input
                         onChange={handleAuthorChange}
                         value={author}
                         required={true}
@@ -61,7 +82,7 @@ const BlogForm = ({ createBlogForm }) => {
                 </div>
                 <div>
                     url:{' '}
-                    <input
+                    <Input
                         onChange={handleUrlChange}
                         value={url}
                         required={true}
@@ -71,7 +92,7 @@ const BlogForm = ({ createBlogForm }) => {
                 </div>
             </div>
             <div>
-                <button type="submit">create</button>
+                <HandleButton type="submit">create</HandleButton>
             </div>
         </form>
     )

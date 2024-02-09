@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
 
+import { Table } from 'react-bootstrap'
+
 const User = () => {
     const users = useSelector(({ blogs, users, signUser, notification, errorMessage }) => {
       return users
@@ -26,17 +28,24 @@ const User = () => {
 
     return (
       <div>
-            <h2>{user.name}</h2>
+            <h2>{user.name} added following blogs</h2>
 
-            <h4><b>added blogs</b></h4>
+            <Table striped>
+
+              <tbody>
 
                 {blogs.map((blog) => (
-                    <div key={blog.id}>
-                        <ul>
-                            <li>{blog.title}</li>
-                        </ul>
-                    </div>
+                    <tr key={blog.id}>
+                        <td>
+                            {blog.title}
+                        </td>
+                    </tr>
                 ))}
+
+              </tbody>
+
+            </Table>
+
       </div>
     )
   }

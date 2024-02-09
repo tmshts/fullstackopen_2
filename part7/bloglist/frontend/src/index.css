@@ -18,14 +18,17 @@
     margin-bottom: 10px;
 }
 
-.delete_btn {
-    background: red;
-    color: white;
-    border-radius: 5px;
+.parent {
+    width: 100%;
+    display: flex;
 }
 
-.like_btn {
-    background: green;
-    color: white;
-    border-radius: 5px;
+.child1{
+    width: 100%;
+    margin: auto;
 }
+
+.child2{
+    width: 270px;
+}
+

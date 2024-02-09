@@ -7,6 +7,45 @@ import { useParams } from 'react-router-dom'
 
 import { useNavigate } from 'react-router-dom'
 
+import styled from 'styled-components'
+
+const CommentButton = styled.button`
+    color: #BF4F74;
+    font-size: 1em;
+    margin: 0.5em;
+    padding: 0.25em 1em;
+    border: 2px solid #BF4F74;
+    border-radius: 10px;
+    &:focus {
+        outline: none
+`
+
+const DeleteButton = styled.button`
+    background: #ADADAD;
+    color: #2E1114;
+    font-size: 1em;
+    margin-top: 1em;
+    padding: 0.25em 1em;
+    border: 2px solid #BF4F74;
+    border-radius: 10px;
+`
+
+const LikeButton = styled(CommentButton)`
+  margin-left: 0.1em;
+  font-size: 0.8em;
+  padding: 0.25em 0.7em;
+`
+
+const Input = styled.input`
+    padding: grey;
+    border: 2px solid black;
+    border-radius: 3px;
+    font-size: 15px;
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px #BF4F74;
+}`
+
 const Blog = () => {
 
     const dispatch = useDispatch()
@@ -68,36 +107,33 @@ const Blog = () => {
     
     return (
         <div>
-            <h2>Blog app</h2>
 
             <h1>{blog.title}</h1>
                     
-            <p>{blog.url}</p>
-            <p>{blog.likes}{' '}likes{' '}
-                <button className="like_btn" onClick={() => handleLike(blog)}>
+            <p><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></p>
+            <p><b>{blog.likes}</b>{' '}likes{' '}
+                <LikeButton onClick={() => handleLike(blog)}>
                     like
-                </button>
+                </LikeButton>
             </p>
             <div>
                 added by {blog.user.name}
             </div>
             <div>
                 {signUser.username === blog.user.username && (
-                    <button className="delete_btn" onClick={() => handleDelete(blog)}>
-                        delete
-                    </button>
+                    <DeleteButton onClick={() => handleDelete(blog)}>
+                        delete blog
+                    </DeleteButton>
                 )}
             </div>
             <h3>Comments:</h3>
             <form onSubmit={addComment}>
-                <div>
-                    <input
+                    <Input
                         onChange={handleComment}
                         value={comment}
                         required={true}
                         type="text"
-                    /><button type="submit">add comment</button>
-                </div>
+                    /><CommentButton type="submit">add comment</CommentButton>
                 
             </form>
     

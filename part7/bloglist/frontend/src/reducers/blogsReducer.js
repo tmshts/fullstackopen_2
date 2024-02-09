@@ -76,9 +76,9 @@ export const deleteBlogDispatch = blog => {
       await blogService.deleteBlog(blog.id)
       dispatch(blogToDelete(blog.id))
       dispatch(deleteBlogInUser(blog))
-      dispatch(setNotification(`Blog ${blog.title} has been deleted`, 5))
+      dispatch(setNotification(`Blog "${blog.title}" has been deleted`, 5))
     } catch (e) {
-      dispatch(setErrorMessage(`Blog ${blog.title} can not be deleted`, 5))
+      dispatch(setErrorMessage(`Blog "${blog.title}" can not be deleted`, 5))
     }
   }
 }
@@ -90,7 +90,7 @@ export const createComment = (content) => {
           const returnedComment = await blogService.addComment(content, blog_id)
           dispatch(updateBlogsAfterComment(returnedComment))
         } catch (exception) {
-          dispatch(setErrorMessage(`Comment ${comment} can not be added`, 5))
+          dispatch(setErrorMessage(`Comment "${comment}" can not be added`, 5))
         }
       }
 }
@@ -112,9 +112,9 @@ export const createBlog = content => {
         }
       })
       dispatch(appendBlogInUser(newBlog))
-      dispatch(setNotification(`A new blog ${content.title} by ${content.author} added`, 5))
+      dispatch(setNotification(`A new blog "${content.title}" by "${content.author}" added`, 5))
     } catch (e) {
-      dispatch(setErrorMessage(`Blog ${content.title} can not be added`, 5))
+      dispatch(setErrorMessage(`Blog "${content.title}" can not be added`, 5))
     }
   }
 }
@@ -138,7 +138,7 @@ export const increaseVotes = (blog) => {
         }
       })
     } catch (e) {
-      dispatch(setErrorMessage(`A vote for blog ${blog.title} can not be made`, 5))
+      dispatch(setErrorMessage(`A vote for blog "${blog.title}" can not be made`, 5))
     }
   }
 }

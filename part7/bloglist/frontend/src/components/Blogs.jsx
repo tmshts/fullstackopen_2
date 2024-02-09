@@ -7,6 +7,8 @@ import { useRef } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Table } from 'react-bootstrap'
+
 const Blogs = ({blogs}) => {
 
     const blogFormRef = useRef()
@@ -18,7 +20,7 @@ const Blogs = ({blogs}) => {
     const blogForm = () => {
         return (
             <div>
-                <Togglable buttonLabel="create new" ref={blogFormRef}>
+                <Togglable buttonLabel="create new blog" ref={blogFormRef}>
                     <BlogForm
                         createBlogForm={addBlog}
                     />
@@ -49,13 +51,33 @@ const Blogs = ({blogs}) => {
 
             {blogForm()}
 
-            {blogs.map(blog =>
-            <div key={blog.id}>
-                <Link to={`/blogs/${blog.id}`}>
-                    {blog.title}
-                </Link>
-            </div>
-            )}
+            <Table striped>
+
+                <tbody>
+
+                    {blogs.map(blog =>
+
+                    <tr key={blog.id}>
+                        <td>
+
+                            <Link to={`/blogs/${blog.id}`}>
+                            {blog.title}
+                            </Link>
+
+                        </td>
+                        <td>
+                            {blog.user.name}
+                        </td>
+
+                    </tr>
+  
+                    )}
+
+
+                </tbody>
+
+            </Table>
+
       </div>
     )
 }
