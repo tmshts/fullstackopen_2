@@ -5,40 +5,29 @@ import { increaseVotes, deleteBlogDispatch, createComment } from '../reducers/bl
 
 import { useParams } from 'react-router-dom'
 
-import {
-    useNavigate
-  } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const Blog = ({ blogs }) => {
+const Blog = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const signUser = useSelector(({ blogs, users, signUser, notification, errorMessage }) => {
         return signUser
     })
 
-    const navigate = useNavigate()
+    const blogs = useSelector(({ blogs, users, signUser, notification, errorMessage }) => {
+        return blogs
+    })
 
     const id = useParams().id
-
     const blog = blogs.find(blog => blog.id === id)
 
-    // after refreshing the page for a specific blog -> crush
-    // the solution below is not working
-    // If you know how to remove this bug, let me please know. Thank you.
-    /*
+    const [comment, setComment] = useState('')
+
     if (!blog) { 
         return null
     }
-
-    blogs = useSelector(({ blogs, users, signUser, notification, errorMessage }) => {
-        return blogs
-    })
-    */
-
-
-    const [blogObject, setBlogObject] = useState(blog)
-    const [comment, setComment] = useState('')
 
     const handleLike = ( blog ) => {
         
@@ -51,26 +40,16 @@ const Blog = ({ blogs }) => {
             id: blog.id
             }
         
-        const blogToUpdateLocally = {
-            title: blog.title,
-            author: blog.author,
-            url: blog.url,
-            likes: blog.likes + 1,
-            user: blog.user,
-            id: blog.id,
-        }
-        
         dispatch(increaseVotes(blogToUpdate))
-        setBlogObject(blogToUpdateLocally)
     } 
 
-    const handleDelete = async (blogObject) => {
+    const handleDelete = async (blog) => {
         if (
             window.confirm(
-                `Do you want to remove blog ${blogObject.title} by ${blogObject.author}`
+                `Do you want to remove blog ${blog.title} by ${blog.author}`
             )
         ) {
-            dispatch(deleteBlogDispatch(blogObject))
+            dispatch(deleteBlogDispatch(blog))
             navigate('/')
         }
     }
@@ -93,18 +72,17 @@ const Blog = ({ blogs }) => {
 
             <h1>{blog.title}</h1>
                     
-
             <p>{blog.url}</p>
-            <p>{blogObject.likes}{' '}likes{' '}
-                <button className="like_btn" onClick={() => handleLike(blogObject)}>
+            <p>{blog.likes}{' '}likes{' '}
+                <button className="like_btn" onClick={() => handleLike(blog)}>
                     like
                 </button>
             </p>
             <div>
-                added by {blogObject.user.name}
+                added by {blog.user.name}
             </div>
             <div>
-                {signUser.username === blogObject.user.username && (
+                {signUser.username === blog.user.username && (
                     <button className="delete_btn" onClick={() => handleDelete(blog)}>
                         delete
                     </button>
@@ -122,7 +100,7 @@ const Blog = ({ blogs }) => {
                 </div>
                 
             </form>
-
+    
             {blog.comments.map((comment) => (
                         <div key={comment.id}>
                             <ul>

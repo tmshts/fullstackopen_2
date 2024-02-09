@@ -123,9 +123,7 @@ export const increaseVotes = (blog) => {
   return async dispatch => {
     try {
       const updatedBlog = await blogService.updateVotes(blog)
-
       const comments = await blogService.getAllComments(updatedBlog.id)
-      
       const users = await userService.getAll()
       users.find(user => {
         if (user.id === updatedBlog.user) {

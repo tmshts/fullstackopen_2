@@ -30,6 +30,10 @@ blogRouter.get('/comments', async (request, response, next) => {
 blogRouter.get('/:id', async (request, response, next) => {
     try {
         const blog = await Blog.findById(request.params.id)
+            .populate('comments', {
+                content: 1,
+                id: 1
+        })
 
         if (!blog) {
             response.status(404).json({ error: 'Blog ID does not exist' })

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import Notification from './components/Notification'
+import Blogs from './components/Blogs'
+import Users from './components/Users'
+import User from './components/User'
 import ErrorMessage from './components/ErrorMessage'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import './index.css'
 
@@ -14,7 +14,7 @@ import { storeSignInUser, storeSignInUserEffect, removeSignInUser } from './redu
 
 import {
     BrowserRouter as Router,
-    Routes, Route, Link, useParams
+    Routes, Route, Link
   } from 'react-router-dom'
   
 
@@ -51,93 +51,6 @@ const App = () => {
             dispatch(storeSignInUserEffect(user))
         }
     }, [])
-
-    const Users = ({ users }) => (
-        <>
-          <h2>Users</h2>
-          <table>
-            <tbody>
-                    <tr>
-                        <td> </td>
-                        <td>
-                            <div><b>blogs created</b></div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    {users.map(user =>
-                    <tr key={user.id}>
-                        <td>
-                            <Link to={`/users/${user.id}`}>
-                                {user.name}
-                            </Link>
-                        </td>
-                        <td>
-                            {user.blogs.length}
-                        </td>
-                    </tr>
-                    )}
-                </tbody>
-            </table>
-        </>
-    )
-
-    const Blogs = ({blogs}) => {
-        return (
-            <div>
-                <h2>Blog app</h2>
-
-                <Notification />
-                <ErrorMessage />
-
-                {blogForm()}
-
-                {blogs.map(blog =>
-                <div key={blog.id}>
-                    <Link to={`/blogs/${blog.id}`}>
-                        {blog.title}
-                    </Link>
-                </div>
-                )}
-          </div>
-        )
-    }
-
-    const User = ({ users }) => {
-        const id = useParams().id
-
-        const user = users.find(user => user.id === id)
-
-        if (!user) {
-            return null
-          }
-        const blogs = user.blogs
-
-        if (blogs.length === 0) {
-            return (
-                <div>
-                    <h4>{user.name} has not added any blogs</h4>
-                </div>
-            )
-          }
-
-        return (
-          <div>
-                <h2>{user.name}</h2>
-
-                <h4><b>added blogs</b></h4>
-
-                    {blogs.map((blog) => (
-                        <div key={blog.id}>
-                            <ul>
-                                <li>{blog.title}</li>
-                            </ul>
-                        </div>
-                    ))}
-          </div>
-        )
-      }
-
     
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -149,24 +62,6 @@ const App = () => {
     const handleLogOut = () => {
         window.localStorage.removeItem('loggedBlogAppUser')
         dispatch(removeSignInUser())
-    }
-
-    const blogFormRef = useRef()
-
-    const addBlog = async () => {
-        blogFormRef.current.toggleVisibility()
-    }
-
-    const blogForm = () => {
-        return (
-            <div>
-                <Togglable buttonLabel="create new" ref={blogFormRef}>
-                    <BlogForm
-                        createBlogForm={addBlog}
-                    />
-                </Togglable>
-            </div>
-        )
     }
 
     if (signUser === null) {
@@ -204,9 +99,9 @@ const App = () => {
 
                 <Routes>
                     <Route path="/" element={<Blogs blogs={blogs} />} />
-                    <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
+                    <Route path="/blogs/:id" element={<Blog />} />
                     <Route path="/users" element={<Users users={users} />} />
-                    <Route path="/users/:id" element={<User users={users} />} />
+                    <Route path="/users/:id" element={<User />} />
                 </Routes>
                 
                 <div>
