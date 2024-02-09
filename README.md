@@ -2,6 +2,8 @@
 
 **The University of Helsinky** offers an open online course about introduction to modern JavaScript-based web development.
 <br>
+![certificate-fullstack](https://github.com/tmshts/fullstackopen_2/assets/74012536/bd1a3500-0f21-41fa-9282-115ededc4d8f)
+
 The main focus is on building single page applications with ReactJS that use REST APIs built with Node.js.
 Moreover, Redux, Node.js, MongoDB, GraphQL and TypeScript are introduced.
 
