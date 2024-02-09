@@ -36,7 +36,6 @@ export const removeSignInUser = () => {
 export const storeSignInUser = (credentials) => {
   return async dispatch => {
     try {
-      // const user = await loginService.login({username, password})
       const signInUser = await loginService.login(credentials)
 
       window.localStorage.setItem(
@@ -44,10 +43,8 @@ export const storeSignInUser = (credentials) => {
         JSON.stringify(signInUser)
       )
 
-      // blogService.setToken(user.token)
       blogService.setToken(signInUser.token)
 
-      // setLoggedUser(user)
       dispatch(setSignUser(signInUser))
 
     } catch (e) {

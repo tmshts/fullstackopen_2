@@ -1,11 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImV2YSIsImlkIjoiNjVjNGYwMjE2ZWQ3ZjFhMjVlMzY2YjhkIiwiaWF0IjoxNzA3NDA1MzYyLCJleHAiOjE3MDc0MDg5NjJ9.bCDv_22csNv5lCFfviBwgueTrQGjzUOO-W9u1XfJ6Yw
 
 {
-    "title": "token test 100",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    "likes": 5,
-    "userId": "653d22ad0fa60ddfff9b5ad8"
+    "title": "eva post",
+    "author": "a",
+    "url": "a",
+    "likes": 0
 }

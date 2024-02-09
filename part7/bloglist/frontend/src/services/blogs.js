@@ -13,6 +13,22 @@ const getAll = () => {
     return returnedData
 }
 
+const addComment = async (content) => {
+    const { comment, blog_id } = content
+
+    const comment_content = {
+        content: comment
+    }
+    const response = await axios.post(`${baseUrl}/${blog_id}/comments`, comment_content)
+    return response.data
+}
+
+const getAllComments = async (blog_id) => {
+    const response = await axios.get(`${baseUrl}/${blog_id}/comments`)
+
+    return response.data   
+}
+
 const create = async (newObject) => {
     const config = {
         headers: { Authorization: token },
@@ -29,6 +45,7 @@ const updateVotes = async (updatedBlogObject) => {
     }
 
     const response = await axios.put(`${baseUrl}/${updatedBlogObject.id}`, updatedBlogObject, config)
+
     return response.data
 }
 
@@ -41,4 +58,4 @@ const deleteBlog = async (blog_id) => {
     return response.data
 }
 
-export default { getAll, create, setToken, updateVotes, deleteBlog }
+export default { getAll, getAllComments, create, setToken, updateVotes, deleteBlog, addComment }

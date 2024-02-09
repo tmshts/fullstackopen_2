@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-    const notification = useSelector(({ blogs, signUser, notification, errorMessage }) => {
+    const notification = useSelector(({ blogs, users, signUser, notification, errorMessage }) => {
         return notification
       })
     

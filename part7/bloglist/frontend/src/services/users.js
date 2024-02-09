@@ -8,4 +8,11 @@ const getAll = () => {
     return returnedData
 }
 
-export default { getAll }
+const getUser = async (user_id) => {
+    const response = await axios.get(`${baseUrl}/${user_id}`)
+    console.log("getUser")
+    console.log(response.data)
+    return response.data   
+}
+
+export default { getAll, getUser }

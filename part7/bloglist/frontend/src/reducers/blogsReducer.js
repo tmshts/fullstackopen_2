@@ -1,7 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 
 import blogService from '../services/blogs'
 import userService from '../services/users'
+
+import { deleteBlogInUser, appendBlogInUser } from './usersReducer'
 
 import { setNotification } from './notificationReducer'
 import { setErrorMessage } from './errorMessageReducer'
@@ -15,6 +17,31 @@ const blogSlice = createSlice({
       return state.map(blog =>
         blog.id !== updatedBlog.id ? blog : updatedBlog 
       )
+    },
+    updateBlogsAfterComment(state, action) {
+      const comment = action.payload
+
+      const blog_id = comment.blog
+      const blog = [ ...current(state).filter(blog => blog.id === blog_id)]
+      const the_blog = blog[0]
+
+      const updated_comment = {
+        content: comment.content,
+        id: comment.id
+      }
+      
+      const updated_comments = the_blog.comments.concat(updated_comment)
+
+      const updated_blog = {
+        ...the_blog,
+        comments: updated_comments,
+      }
+
+      return [ ...state.map(blog => {
+        return (
+          blog.id !== updated_blog.id ? blog : updated_blog 
+        )
+        })]
     },
     appendBlog(state, action) {
       state.push(action.payload)
@@ -30,7 +57,7 @@ const blogSlice = createSlice({
   }
 })
 
-export const { addVote, appendBlog, setBlogs, blogToDelete } = blogSlice.actions
+export const { addVote, appendBlog, setBlogs, blogToDelete, updateBlogsAfterComment } = blogSlice.actions
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -48,6 +75,7 @@ export const deleteBlogDispatch = blog => {
     try {
       await blogService.deleteBlog(blog.id)
       dispatch(blogToDelete(blog.id))
+      dispatch(deleteBlogInUser(blog))
       dispatch(setNotification(`Blog ${blog.title} has been deleted`, 5))
     } catch (e) {
       dispatch(setErrorMessage(`Blog ${blog.title} can not be deleted`, 5))
@@ -55,8 +83,19 @@ export const deleteBlogDispatch = blog => {
   }
 }
 
+export const createComment = (content) => {
+      const { comment, blog_id } = content
+      return async dispatch => {
+        try {
+          const returnedComment = await blogService.addComment(content, blog_id)
+          dispatch(updateBlogsAfterComment(returnedComment))
+        } catch (exception) {
+          dispatch(setErrorMessage(`Comment ${comment} can not be added`, 5))
+        }
+      }
+}
+
 export const createBlog = content => {
-      
   return async dispatch => {
     try {
       const newBlog = await blogService.create(content)
@@ -72,6 +111,7 @@ export const createBlog = content => {
           return user
         }
       })
+      dispatch(appendBlogInUser(newBlog))
       dispatch(setNotification(`A new blog ${content.title} by ${content.author} added`, 5))
     } catch (e) {
       dispatch(setErrorMessage(`Blog ${content.title} can not be added`, 5))
@@ -83,8 +123,22 @@ export const increaseVotes = (blog) => {
   return async dispatch => {
     try {
       const updatedBlog = await blogService.updateVotes(blog)
-      dispatch(addVote(updatedBlog))
-      //dispatch(setNotification(`A vote for blog ${blog.title} has been increased`, 5))
+
+      const comments = await blogService.getAllComments(updatedBlog.id)
+      
+      const users = await userService.getAll()
+      users.find(user => {
+        if (user.id === updatedBlog.user) {
+          dispatch(addVote({
+            ...updatedBlog,
+            comments: comments,
+            user: {
+              ...user
+            }
+          }))
+          return user
+        }
+      })
     } catch (e) {
       dispatch(setErrorMessage(`A vote for blog ${blog.title} can not be made`, 5))
     }
