@@ -7,6 +7,8 @@
 The main focus is on building single page applications with ReactJS that use REST APIs built with Node.js.
 Moreover, Redux, Node.js, MongoDB, GraphQL and TypeScript are introduced.
 
+More information related to this course can be found [here](https://fullstackopen.com/en/part0/general_info).
+
 Each part represents a specific topic of the web development.
 
 ## This repository contains:
