@@ -32,3 +32,21 @@
     width: 270px;
 }
 
+.parent_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:20vh; 
+}
+
+.parent_login_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:8vh; 
+}
+
+.loginh2{
+    text-align: center;
+    color: #83677B;
+} 

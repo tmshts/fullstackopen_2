@@ -102,7 +102,7 @@ const App = () => {
     if (signUser === null) {
         return (
             <div>
-                <h2>Log in to Blog application</h2>
+                <h2 className='loginh2'>Login</h2>
 
                 <ErrorMessage />
 

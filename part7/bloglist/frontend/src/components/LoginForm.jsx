@@ -5,54 +5,68 @@ import styled from 'styled-components'
 const Input = styled.input`
     padding: grey;
     border: 2px solid black;
-    border-radius: 3px;
+    border-radius: 10px;
     font-size: 15px;
     margin: 0.5em 0 0 0.2em;
     &:focus {
         outline: none;
         box-shadow: 0px 0px 5px #BF4F74;
-}`
+    }
+`
 
 const LoginButton = styled.button`
     color: #BF4F74;
     font-size: 1em;
+    margin-top: 10px;
     padding: 0.25em 0.5em;
     border: 2px solid #BF4F74;
     border-radius: 10px;
     &:focus {
         outline: none
+    }
 `
 
-const login_style = {
-    marginLeft: 10,
-}
+
 
 const LoginForm = (props) => (
-    <div style={login_style}>
+    <div className='parent_login' >
         <form onSubmit={props.handleSubmit}>
-            <div>
-                username
-                <Input
-                    type="text"
-                    value={props.username}
-                    id="username"
-                    name="Username"
-                    onChange={props.handleUsernameChange}
-                />
-            </div>
-            <div>
-                password
-                <Input
-                    type="password"
-                    value={props.password}
-                    id="password"
-                    name="Password"
-                    onChange={props.handlePasswordChange}
-                />
-            </div>
-            <LoginButton id="login_btn" type="submit">
-                login
-            </LoginButton>
+
+                <div >
+                    <Input
+                        type="text"
+                        value={props.username}
+                        id="username"
+                        name="Username"
+                        onChange={props.handleUsernameChange}
+                        placeholder='Username'  
+                    />
+                </div>
+                
+                <div >
+                    <Input
+                        type="password"
+                        value={props.password}
+                        id="password"
+                        name="Password"
+                        onChange={props.handlePasswordChange}
+                        placeholder='Password'
+                    />
+                </div>
+
+
+                <div>
+
+                    <div className='parent_login_login'>
+                        <LoginButton id="login_btn" type="submit">
+                            login
+                        </LoginButton>
+                    </div>
+
+                </div>
+
+
+
         </form>
     </div>
 
