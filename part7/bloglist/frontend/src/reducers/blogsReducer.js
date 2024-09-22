@@ -12,6 +12,7 @@ const blogSlice = createSlice({
   name: 'blogs',
   initialState: [],
   reducers: {
+    // action creators
     addVote(state, action) {
       const updatedBlog = action.payload
       return state.map(blog =>
